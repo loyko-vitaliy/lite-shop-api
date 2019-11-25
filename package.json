@@ -1,0 +1,21 @@
+{
+  "name": "mindk-express-rest-api",
+  "version": "1.0.0",
+  "description": "Internet shop on express js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "mindk-express-rest-api"
+  },
+  "author": "Dream team",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
