@@ -4,6 +4,7 @@
   "description": "Internet shop on express js",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,6 +14,7 @@
   "author": "Dream team",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^2.0.1",
     "prettier": "^1.19.1"
   },
   "dependencies": {
