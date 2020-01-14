@@ -11,8 +11,7 @@ const attachResourceController = router => (path, Controller) => {
     router
         .route(`${path}`)
         .get(registerAction('index'))
-        .post(registerAction('create'))
-        .patch(registerAction('setName'));
+        .post(registerAction('create'));
 
     router
         .route(`${path}/:id`)

@@ -1,21 +1,14 @@
 class BaseController {
     constructor() {
         this.name = this.constructor.name;
-        this.username = 'Vasya';
     }
 
     index(req, res) {
-        const name = 'Vasya';
-        res.send(`${this.name} -> Index ----- ${this.username}`);
+        res.send(`${this.name} -> Index`);
     }
 
     create(req, res) {
         res.send(`${this.name} -> Create`);
-    }
-
-    setName(req, res) {
-        this.username = 'Petya';
-        res.send(this.username);
     }
 
     read(req, res) {
