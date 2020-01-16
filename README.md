@@ -4,13 +4,14 @@
 
 1. Rename example.env to .env.
 2. To start application run script:
-    > in development mode:
+
+-   in development mode:
 
 ```
 npm run dev
 ```
 
-> in production mode:
+-   in production mode:
 
 ```
 npm start
