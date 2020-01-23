@@ -20,7 +20,7 @@ class BaseController {
     }
 
     async create(req, res) {
-        res.status(201).json(BaseController.successResponce(await this.model.query().insertAndFetch({...req.body})));
+        res.status(201).json(BaseController.successResponce(await this.model.query().insertAndFetch(req.body)));
     }
 
     async read(req, res) {
@@ -51,6 +51,7 @@ class BaseController {
                 await this.model
                     .query()
                     .deleteById(req.params.id)
+                    .returning('*')
                     .throwIfNotFound()
             )
         );
