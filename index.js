@@ -1,9 +1,11 @@
 const express = require('express');
 const {routes} = require('./routes');
+const {bootstrap} = require('./bootstrap');
 
 const {PORT = 3000, NODE_ENV} = process.env;
 
 const app = express();
+bootstrap();
 
 // prettier-ignore
 app
