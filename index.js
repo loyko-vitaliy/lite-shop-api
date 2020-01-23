@@ -1,6 +1,8 @@
 const express = require('express');
 const {routes} = require('./routes');
 const {bootstrap} = require('./bootstrap');
+const notFoundHandler = require('./middleware/not-found-handler');
+const errorHandler = require('./middleware/error-handler.js');
 
 const {PORT = 3000, NODE_ENV} = process.env;
 
@@ -11,6 +13,8 @@ bootstrap();
 app
     .use(express.json())
     .use('/api', routes)
+    .use(notFoundHandler)
+    .use(errorHandler)
     .listen(
         PORT,
         console.log(
