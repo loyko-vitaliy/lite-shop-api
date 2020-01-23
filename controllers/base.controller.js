@@ -1,29 +1,59 @@
 class BaseController {
     constructor() {
-        this.name = this.constructor.name;
+        this.model = require(`../models/${this.modelName}.model.js`);
     }
 
-    index(req, res) {
-        res.send(`${this.name} -> Index`);
+    get modelName() {
+        const [, name] = this.constructor.name.match(/^(.+)Controller$/);
+        return name.toLocaleLowerCase();
     }
 
-    create(req, res) {
-        res.send(`${this.name} -> Create`);
+    static successResponce(data) {
+        return {
+            success: true,
+            data,
+        };
     }
 
-    read(req, res) {
-        const {id} = req.params;
-        res.send(`${this.name} -> Read id: ${id}`);
+    async index(req, res) {
+        res.status(200).json(BaseController.successResponce(await this.model.query()));
     }
 
-    update(req, res) {
-        const {id} = req.params;
-        res.send(`${this.name} -> Update id: ${id}`);
+    async create(req, res) {
+        res.status(201).json(BaseController.successResponce(await this.model.query().insertAndFetch({...req.body})));
     }
 
-    delete(req, res) {
-        const {id} = req.params;
-        res.send(`${this.name} -> Delete id: ${id}`);
+    async read(req, res) {
+        res.status(200).json(
+            BaseController.successResponce(
+                await this.model
+                    .query()
+                    .findById(req.params.id)
+                    .throwIfNotFound()
+            )
+        );
+    }
+
+    async update(req, res) {
+        res.status(200).json(
+            BaseController.successResponce(
+                await this.model
+                    .query()
+                    .patchAndFetchById(req.params.id, req.body)
+                    .throwIfNotFound()
+            )
+        );
+    }
+
+    async delete(req, res) {
+        res.status(200).json(
+            BaseController.successResponce(
+                await this.model
+                    .query()
+                    .deleteById(req.params.id)
+                    .throwIfNotFound()
+            )
+        );
     }
 }
 
