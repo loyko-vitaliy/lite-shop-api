@@ -1,23 +1,24 @@
 {
-  "name": "mindk-express-rest-api",
-  "version": "1.0.0",
-  "description": "Internet shop on express js",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "mindk-express-rest-api"
-  },
-  "author": "Dream team",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.1",
-    "prettier": "^1.19.1"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+    "name": "mindk-express-rest-api",
+    "version": "1.0.0",
+    "description": "Internet shop on express js",
+    "main": "index.js",
+    "scripts": {
+        "dev": "dotenv nodemon index.js",
+        "start": "NODE_ENV=production dotenv node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "mindk-express-rest-api"
+    },
+    "author": "Dream team",
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.1",
+        "prettier": "^1.19.1"
+    },
+    "dependencies": {
+        "dotenv-cli": "^3.1.0",
+        "express": "^4.17.1"
+    }
 }
