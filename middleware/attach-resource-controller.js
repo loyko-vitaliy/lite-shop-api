@@ -1,9 +1,11 @@
+const asyncHandler = require('./async-handler');
+
 const createController = Controller => (req, res, next) => {
     req.controller = new Controller();
     next();
 };
 
-const registerAction = action => (req, res) => req.controller[action](req, res);
+const registerAction = action => asyncHandler((req, res, next) => req.controller[action](req, res, next));
 
 const attachResourceController = router => (path, Controller) => {
     router
