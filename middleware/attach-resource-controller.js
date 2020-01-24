@@ -1,25 +1,21 @@
-const asyncHandler = require('./async-handler');
-
-const createController = Controller => (req, res, next) => {
-    req.controller = new Controller();
-    next();
-};
-
-const registerAction = action => asyncHandler((req, res, next) => req.controller[action](req, res, next));
+const addToContext = require('./add-to-context');
+const getFromContext = require('./get-from-context');
 
 const attachResourceController = router => (path, Controller) => {
+    const controller = 'controller';
+
     router
         .route(`${path}`)
-        .all(createController(Controller))
-        .get(registerAction('index'))
-        .post(registerAction('create'));
+        .all(addToContext(controller, Controller))
+        .get(getFromContext(controller, 'index'))
+        .post(getFromContext(controller, 'create'));
 
     router
         .route(`${path}/:id`)
-        .all(createController(Controller))
-        .get(registerAction('read'))
-        .put(registerAction('update'))
-        .delete(registerAction('delete'));
+        .all(addToContext(controller, Controller))
+        .get(getFromContext(controller, 'read'))
+        .put(getFromContext(controller, 'update'))
+        .delete(getFromContext(controller, 'delete'));
 
     return router;
 };

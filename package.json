@@ -18,6 +18,7 @@
         "prettier": "^1.19.1"
     },
     "dependencies": {
+        "cls-hooked": "^4.2.2",
         "dotenv-cli": "^3.1.0",
         "express": "^4.17.1",
         "knex": "^0.20.8",
