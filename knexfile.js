@@ -1,14 +1,9 @@
 const {knexSnakeCaseMappers} = require('objection');
 
-const {
-    POSTGRES_HOST = 'localhost',
-    POSTGRES_DB = 'shop',
-    POSTGRES_USER = 'postgres',
-    POSTGRES_PASSWORD = 'postgres',
-} = process.env;
+const {DB_DRIVER, POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD} = process.env;
 
 module.exports = {
-    client: 'pg',
+    client: DB_DRIVER,
     connection: {
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
