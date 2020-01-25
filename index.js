@@ -11,7 +11,6 @@ bootstrap();
 
 // prettier-ignore
 app
-    
     .use(express.json())
     .use('/api', routes)
     .use(notFoundHandler)
