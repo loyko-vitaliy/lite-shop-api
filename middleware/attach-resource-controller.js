@@ -1,23 +1,21 @@
-const createController = Controller => (req, res, next) => {
-    req.controller = new Controller();
-    next();
-};
-
-const registerAction = action => (req, res) => req.controller[action](req, res);
+const addToContext = require('./add-to-context');
+const getFromContext = require('./get-from-context');
 
 const attachResourceController = router => (path, Controller) => {
-    router.use(createController(Controller));
+    const controller = 'controller';
 
     router
         .route(`${path}`)
-        .get(registerAction('index'))
-        .post(registerAction('create'));
+        .all(addToContext(controller, Controller))
+        .get(getFromContext(controller, 'index'))
+        .post(getFromContext(controller, 'create'));
 
     router
         .route(`${path}/:id`)
-        .get(registerAction('read'))
-        .put(registerAction('update'))
-        .delete(registerAction('delete'));
+        .all(addToContext(controller, Controller))
+        .get(getFromContext(controller, 'read'))
+        .put(getFromContext(controller, 'update'))
+        .delete(getFromContext(controller, 'delete'));
 
     return router;
 };
