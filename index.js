@@ -1,6 +1,8 @@
 const express = require('express');
+const bootstrap = require('./bootstrap');
+const passport = require('./passport');
+const auth = require('./middleware/auth');
 const {routes} = require('./routes');
-const {bootstrap} = require('./bootstrap');
 const notFoundHandler = require('./middleware/not-found-handler');
 const errorHandler = require('./middleware/error-handler.js');
 
@@ -11,13 +13,10 @@ bootstrap();
 
 // prettier-ignore
 app
-    .use(express.json())
-    .use('/api', routes)
-    .use(notFoundHandler)
-    .use(errorHandler)
-    .listen(
-        PORT,
-        console.log(
-            `Server has been started in ${NODE_ENV} mode at port ${PORT}`
-        )
-    );
+  .use(express.json())
+  .use(passport.initialize())
+  .use(auth())
+  .use('/api', routes)
+  .use(notFoundHandler)
+  .use(errorHandler)
+  .listen(PORT, console.log(`Server has been started in ${NODE_ENV} mode at port ${PORT}`));
