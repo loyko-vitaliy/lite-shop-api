@@ -15,7 +15,7 @@ const attachResourceController = router => (
         ],
     } = {}
 ) => {
-    for (const {route, middleware, method, action} of bindings) {
+    for (const {route, middleware = [], method, action} of bindings) {
         const controller = 'controller';
 
         router

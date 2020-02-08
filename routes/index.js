@@ -8,11 +8,10 @@ const AuthController = require('../controllers/auth.controller');
 const {Roles, disallowRoles, allowRoles} = require('../middleware/check-roles');
 
 attachResourceController('/auth', AuthController, {
-    middleware: [],
     bindings: [
-        {route: '/login', method: 'POST', action: 'login', middleware: []},
+        {route: '/login', method: 'POST', action: 'login'},
         {route: '/logout', method: 'POST', action: 'logout', middleware: [disallowRoles(Roles.GUEST)]},
-        {route: '/register', method: 'POST', action: 'register', middleware: []},
+        {route: '/register', method: 'POST', action: 'register'},
     ],
 });
 attachResourceController('/users', UserController, {middleware: [allowRoles(Roles.ADMIN)]});
