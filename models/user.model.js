@@ -1,5 +1,6 @@
 const Base = require('./base.model');
 const Password = require('objection-password')();
+const uuid = require('uuid/v4');
 class User extends Password(Base) {
     static get tableName() {
         return 'users';
@@ -8,6 +9,7 @@ class User extends Password(Base) {
     async $beforeInsert(context) {
         const {username, email, mobilePhone} = this;
         await User.checkUnique({username, email, mobilePhone});
+        this.token = uuid();
     }
 
     static get jsonSchema() {

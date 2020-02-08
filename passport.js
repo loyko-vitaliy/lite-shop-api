@@ -45,8 +45,9 @@ passport.use(
         {usernameField: 'username', passwordField: 'password', passReqToCallback: true},
         async ({body}, username, password, done) => {
             try {
-                const token = uuid();
-                const user = await User.query().insertAndFetch({...body, token});
+                const user = await User.query()
+                    .insert(body)
+                    .returning('*');
                 return done(null, user, {message: 'User created successfully!'});
             } catch (error) {
                 return done(error);
