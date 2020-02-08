@@ -5,6 +5,11 @@ class User extends Password(Base) {
         return 'users';
     }
 
+    async $beforeInsert(context) {
+        const {username, email, mobilePhone} = this;
+        await User.checkUnique({username, email, mobilePhone});
+    }
+
     static get jsonSchema() {
         return {
             type: 'object',
