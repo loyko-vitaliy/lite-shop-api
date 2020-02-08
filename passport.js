@@ -1,7 +1,6 @@
 const passport = require('passport');
 const {Strategy: LocalStrategy} = require('passport-local');
 const {Strategy: BearerStrategy} = require('passport-http-bearer');
-const uuid = require('uuid/v4');
 const User = require('./models/user.model');
 
 passport.use(
@@ -16,9 +15,8 @@ passport.use(
             if (!passwordsAreEqual) {
                 return done(null, false, {message: 'Wrong credentials supplied.'});
             }
-            const token = uuid();
-            await User.query().patchAndFetchById(user.id, {token});
-            return done(null, {id: user.id, token}, {message: 'Logged in successfully!'});
+            await user.updateToken();
+            return done(null, user, {message: 'Logged in successfully!'});
         } catch (error) {
             return done(error);
         }
@@ -32,7 +30,7 @@ passport.use(
             if (!user) {
                 return done(null, false, {message: `There is no user with token: ${token}`});
             }
-            return done(null, user);
+            return done(null, user), {message: `User ${user.username} with token ${token} is authenticated`};
         } catch (error) {
             done(error);
         }

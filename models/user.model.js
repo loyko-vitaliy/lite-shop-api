@@ -12,6 +12,12 @@ class User extends Password(Base) {
         this.token = uuid();
     }
 
+    async updateToken() {
+        const token = uuid();
+        const user = await User.query().patchAndFetchById(this.id, {token});
+        return user.token;
+    }
+
     static get jsonSchema() {
         return {
             type: 'object',

@@ -1,6 +1,4 @@
-const User = require('../models/user.model');
 const passport = require('../passport');
-const uuid = require('uuid/v4');
 const successResponse = require('../helpers/success-response');
 const {CredentialError} = require('../helpers/errors');
 
@@ -20,8 +18,7 @@ class AuthController {
     }
 
     static async logout(req, res, next) {
-        const token = uuid();
-        await User.query().patchAndFetchById(req.user.id, {token});
+        await req.user.updateToken();
         delete req.user;
         res.status(200).json(successResponse());
     }
