@@ -8,7 +8,7 @@ const {
     CheckViolationError,
     DataError,
 } = require('objection');
-const {CredentialError, PermissionError} = require('../helpers/errors');
+const {CredentialError, PermissionError, ResetTokenError, EmailError} = require('../helpers/errors');
 
 const errorHandler = (err, req, res, next) => {
     const {statusCode = 500, message = 'Server Error', type = 'UnknowError'} = err;
@@ -57,6 +57,12 @@ const errorHandler = (err, req, res, next) => {
     } else if (err instanceof PermissionError) {
         error.statusCode = 403;
         error.type = 'PermissionError';
+    } else if (err instanceof ResetTokenError) {
+        error.statusCode = 404;
+        error.type = 'ResetTokenError';
+    } else if (err instanceof EmailError) {
+        error.statusCode = 500;
+        error.type = 'EmailError';
     }
 
     res.status(error.statusCode).json({
