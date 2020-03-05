@@ -18,8 +18,32 @@ attachResourceController('/auth', AuthController, {
     ],
 });
 attachResourceController('/users', UserController, {middleware: [allowRoles(Roles.ADMIN)]});
-attachResourceController('/categories', CategoryController);
-attachResourceController('/orders', OrderController, {middleware: [disallowRoles(Roles.GUEST)]});
-attachResourceController('/products', ProductController);
+attachResourceController('/categories', CategoryController, {
+    bindings: [
+        {route: '/', method: 'GET', action: 'index'},
+        {route: '/:id', method: 'GET', action: 'read'},
+        {route: '/', method: 'POST', action: 'create', middleware: [allowRoles(Roles.ADMIN)]},
+        {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
+        {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
+    ],
+});
+attachResourceController('/orders', OrderController, {
+    bindings: [
+        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST)]},
+        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST)]},
+        {route: '/', method: 'POST', action: 'create', middleware: [disallowRoles(Roles.GUEST)]},
+        {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
+        {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
+    ],
+});
+attachResourceController('/products', ProductController, {
+    bindings: [
+        {route: '/', method: 'GET', action: 'index', middleware: [allowRoles(Roles.USER)]},
+        {route: '/:id', method: 'GET', action: 'read', middleware: [allowRoles(Roles.USER)]},
+        {route: '/', method: 'POST', action: 'create', middleware: [allowRoles(Roles.USER)]},
+        {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
+        {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
+    ],
+});
 
 exports.routes = router;

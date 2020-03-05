@@ -1,4 +1,5 @@
 const successResponse = require('../helpers/success-response');
+const {buildFilter} = require('objection-filter');
 class BaseController {
     constructor() {
         this.model = require(`../models/${this.modelName}.model.js`);
@@ -10,7 +11,10 @@ class BaseController {
     }
 
     async index(req, res) {
-        res.status(200).json(successResponse(await this.model.query()));
+        if (!req.query.filter) {
+            return res.status(200).json(successResponse(await this.model.query()));
+        }
+        res.status(200).json(successResponse(await buildFilter(this.model).build(JSON.parse(req.query.filter))));
     }
 
     async create(req, res) {
