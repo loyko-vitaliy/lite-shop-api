@@ -1,16 +1,9 @@
-class ServiceLocator {
-    static instance = null;
+const Singleton = require('../helpers/singleton');
 
+class ServiceLocator extends Singleton {
     constructor() {
+        super();
         this.services = {};
-        return this.getInstance();
-    }
-
-    getInstance() {
-        if (!ServiceLocator.instance) {
-            ServiceLocator.instance = this;
-        }
-        return ServiceLocator.instance;
     }
 
     register(name, service) {

@@ -12,6 +12,9 @@ attachResourceController('/auth', AuthController, {
         {route: '/login', method: 'POST', action: 'login'},
         {route: '/logout', method: 'POST', action: 'logout', middleware: [disallowRoles(Roles.GUEST)]},
         {route: '/register', method: 'POST', action: 'register'},
+        {route: '/recover', method: 'POST', action: 'recover', middleware: [allowRoles(Roles.GUEST)]},
+        {route: '/reset', method: 'GET', action: 'checkResetPasswordToken', middleware: [allowRoles(Roles.GUEST)]},
+        {route: '/reset', method: 'POST', action: 'reset', middleware: [allowRoles(Roles.GUEST)]},
     ],
 });
 attachResourceController('/users', UserController, {middleware: [allowRoles(Roles.ADMIN)]});

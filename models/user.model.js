@@ -13,9 +13,25 @@ class User extends Password(Base) {
     }
 
     async updateToken() {
-        const token = uuid();
-        const user = await User.query().patchAndFetchById(this.id, {token});
-        return user.token;
+        const token = this.generateToken();
+        await User.query().patchAndFetchById(this.id, {token});
+        return token;
+    }
+
+    async updateResetPasswordToken() {
+        const tokenExpires = 1 * 60 * 60 * 1000;
+        const resetPasswordToken = this.generateToken();
+        const resetPasswordExpires = new Date(Date.now() + tokenExpires);
+        await User.query().patchAndFetchById(this.id, {resetPasswordToken, resetPasswordExpires});
+        return resetPasswordToken;
+    }
+
+    checkResetPasswordToken() {
+        return this.resetPasswordExpires > Date.now();
+    }
+
+    generateToken() {
+        return uuid();
     }
 
     static get jsonSchema() {
