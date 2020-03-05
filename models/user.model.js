@@ -7,6 +7,7 @@ class User extends Password(Base) {
     }
 
     async $beforeInsert(context) {
+        await super.$beforeInsert(context);
         const {username, email, mobilePhone} = this;
         await User.checkUnique({username, email, mobilePhone});
         this.token = uuid();
