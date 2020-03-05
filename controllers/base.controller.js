@@ -1,3 +1,4 @@
+const successResponse = require('../helpers/success-response');
 class BaseController {
     constructor() {
         this.model = require(`../models/${this.modelName}.model.js`);
@@ -8,24 +9,17 @@ class BaseController {
         return name.toLocaleLowerCase();
     }
 
-    static successResponce(data) {
-        return {
-            success: true,
-            data,
-        };
-    }
-
     async index(req, res) {
-        res.status(200).json(BaseController.successResponce(await this.model.query()));
+        res.status(200).json(successResponse(await this.model.query()));
     }
 
     async create(req, res) {
-        res.status(201).json(BaseController.successResponce(await this.model.query().insertAndFetch(req.body)));
+        res.status(201).json(successResponse(await this.model.query().insertAndFetch(req.body)));
     }
 
     async read(req, res) {
         res.status(200).json(
-            BaseController.successResponce(
+            successResponse(
                 await this.model
                     .query()
                     .findById(req.params.id)
@@ -36,7 +30,7 @@ class BaseController {
 
     async update(req, res) {
         res.status(200).json(
-            BaseController.successResponce(
+            successResponse(
                 await this.model
                     .query()
                     .patchAndFetchById(req.params.id, req.body)
@@ -47,7 +41,7 @@ class BaseController {
 
     async delete(req, res) {
         res.status(200).json(
-            BaseController.successResponce(
+            successResponse(
                 await this.model
                     .query()
                     .deleteById(req.params.id)
