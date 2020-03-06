@@ -12,7 +12,8 @@ exports.up = knex =>
             .string('description', 100)
             .unique()
             .notNullable();
-        table.integer('parent_id').nullable();
+        table.integer('parent_id');
+        table.foreign('parent_id').references('categories.id');
     });
 
 exports.down = knex =>
