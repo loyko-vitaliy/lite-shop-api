@@ -5,7 +5,9 @@ exports.up = knex =>
             .unique()
             .notNullable();
         table.specificType('password', 'CHAR(60)').notNullable();
-        table.enu('role', ['admin', 'user'], {useNative: true, enumName: 'role_type'}).defaultTo('user');
+        table
+            .enu('role', ['admin', 'user'], {useNative: true, enumName: 'role_type', existingType: true})
+            .defaultTo('user');
         table
             .specificType('token', 'CHAR(36)')
             .unique()
@@ -36,4 +38,5 @@ exports.down = knex =>
             'mobile_phone',
             'token'
         );
+        table.enu('role');
     });
