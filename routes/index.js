@@ -38,9 +38,9 @@ attachResourceController('/orders', OrderController, {
 });
 attachResourceController('/products', ProductController, {
     bindings: [
-        {route: '/', method: 'GET', action: 'index', middleware: [allowRoles(Roles.USER)]},
-        {route: '/:id', method: 'GET', action: 'read', middleware: [allowRoles(Roles.USER)]},
-        {route: '/', method: 'POST', action: 'create', middleware: [allowRoles(Roles.USER)]},
+        {route: '/', method: 'GET', action: 'index'},
+        {route: '/:id', method: 'GET', action: 'read'},
+        {route: '/', method: 'POST', action: 'create', middleware: [allowRoles(Roles.ADMIN)]},
         {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
         {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},
     ],
