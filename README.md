@@ -25,3 +25,11 @@ docker container ps
 docker exec -it {container_id} bash
 node_modules/.bin/knex migrate:latest
 ```
+
+5. Run seeds in docker container
+
+```
+docker container ps
+docker exec -it {container_id} bash
+node_modules/.bin/knex seed:run
+```
