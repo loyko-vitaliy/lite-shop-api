@@ -19,6 +19,20 @@ class Product extends Base {
             },
         };
     }
+
+    static get jsonSchema() {
+        return {
+            type: 'object',
+            required: ['name', 'slug', 'description', 'price', 'categoryId'],
+            properties: {
+                name: {type: 'string', minLength: 6, maxLength: 50},
+                slug: {type: 'string', minLength: 6, maxLength: 50},
+                description: {type: 'string', minLength: 20},
+                price: {type: 'number'},
+                categoryId: {type: 'integer', minimum: 1},
+            },
+        };
+    }
 }
 
 module.exports = Product;
