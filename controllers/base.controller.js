@@ -9,7 +9,7 @@ class BaseController {
         return name.toLocaleLowerCase();
     }
 
-    async index({query: {filter = '{}'}}, res) {
+    async index({query: {filter = '{}'}, checkPermissions = false, user: {id: userId, role}}, res) {
         const {
             limit = 10,
             offset = 0,
@@ -57,7 +57,14 @@ class BaseController {
                     .joinRelated(`${Object.keys(relationFilters)}`)
                     .where(relationFiltersRules(relationFilters))
                     .orderBy(orderRules)
-                    .where(filters)
+                    .modify(builder => {
+                        if (checkPermissions) {
+                            const condition = role === 'admin' ? {} : {userId};
+                            builder.where(condition).andWhere(filters);
+                        } else {
+                            builder.where(filters);
+                        }
+                    })
                     .range(offset, limit + offset - 1)
             )
         );
