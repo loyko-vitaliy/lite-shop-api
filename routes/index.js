@@ -6,6 +6,11 @@ const OrderController = require('../controllers/order.controller');
 const ProductController = require('../controllers/product.controller');
 const AuthController = require('../controllers/auth.controller');
 const {Roles, disallowRoles, allowRoles} = require('../middleware/check-roles');
+const UploaderController = require('../controllers/uploader.controller');
+
+attachResourceController('/upload', UploaderController, {
+    bindings: [{route: '/', method: 'POST', action: 'upload', middleware: [disallowRoles(Roles.GUEST)]}],
+});
 
 attachResourceController('/auth', AuthController, {
     bindings: [

@@ -5,6 +5,7 @@ const auth = require('./middleware/auth');
 const {routes} = require('./routes');
 const notFoundHandler = require('./middleware/not-found-handler');
 const errorHandler = require('./middleware/error-handler.js');
+const fileUpload = require('express-fileupload');
 
 const {PORT = 3000, NODE_ENV} = process.env;
 
@@ -14,6 +15,8 @@ bootstrap();
 // prettier-ignore
 app
   .use(express.json())
+  .use(fileUpload())
+  .use(express.static('public'))
   .use(passport.initialize())
   .use(auth())
   .use('/api', routes)
