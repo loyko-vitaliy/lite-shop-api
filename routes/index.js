@@ -7,6 +7,7 @@ const ProductController = require('../controllers/product.controller');
 const AuthController = require('../controllers/auth.controller');
 const {Roles, disallowRoles, allowRoles} = require('../middleware/check-roles');
 const UploaderController = require('../controllers/uploader.controller');
+const limitQuery = require('../middleware/limit-query');
 
 attachResourceController('/upload', UploaderController, {
     bindings: [{route: '/', method: 'POST', action: 'upload', middleware: [disallowRoles(Roles.GUEST)]}],
@@ -34,8 +35,8 @@ attachResourceController('/categories', CategoryController, {
 });
 attachResourceController('/orders', OrderController, {
     bindings: [
-        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST)]},
-        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST)]},
+        {route: '/', method: 'GET', action: 'index', middleware: [disallowRoles(Roles.GUEST), limitQuery()]},
+        {route: '/:id', method: 'GET', action: 'read', middleware: [disallowRoles(Roles.GUEST), limitQuery()]},
         {route: '/', method: 'POST', action: 'create', middleware: [disallowRoles(Roles.GUEST)]},
         {route: '/:id', method: 'PUT', action: 'update', middleware: [allowRoles(Roles.ADMIN)]},
         {route: '/:id', method: 'DELETE', action: 'delete', middleware: [allowRoles(Roles.ADMIN)]},

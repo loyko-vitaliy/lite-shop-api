@@ -3,11 +3,6 @@ const successResponse = require('../helpers/success-response');
 const Product = require('../models/product.model');
 
 class OrderController extends BaseController {
-    async index(req, res, next) {
-        req.checkPermissions = true;
-        super.index(req, res, next);
-    }
-
     async create({body: {details: srcDetails}, user: {id: userId}}, res, next) {
         if (!srcDetails.every(({productId, quantity}) => productId && quantity)) {
             next(new Error('Order must be array of objects {productId: productId, quantity: count}'));
@@ -31,15 +26,13 @@ class OrderController extends BaseController {
         );
     }
 
-    async read({params: {id}, user: {id: userId, role}}, res) {
-        const condition = role === 'admin' ? {} : {userId};
-
+    async read({params: {id}, queryCondition}, res) {
         res.status(200).json(
             successResponse(
                 await this.model
                     .query()
                     .findById(id)
-                    .where(condition)
+                    .where(queryCondition)
                     .withGraphJoined('details')
                     .throwIfNotFound()
             )
