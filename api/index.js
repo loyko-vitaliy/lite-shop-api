@@ -6,6 +6,7 @@ const {routes} = require('./routes');
 const notFoundHandler = require('./middleware/not-found-handler');
 const errorHandler = require('./middleware/error-handler.js');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 
 const {PORT = 3000, NODE_ENV} = process.env;
 
@@ -15,6 +16,7 @@ bootstrap();
 // prettier-ignore
 app
   .use(express.json())
+  .use(cors())
   .use(fileUpload())
   .use(express.static('public'))
   .use(passport.initialize())
