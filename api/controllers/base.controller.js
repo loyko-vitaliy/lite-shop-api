@@ -9,7 +9,7 @@ class BaseController {
         return name.toLocaleLowerCase();
     }
 
-    async index({query: {filter = '{}'}, queryCondition}, res) {
+    async index({query: {filter = '{}'}, queryCondition, queryCallback = data => data}, res) {
         const {
             limit = 10,
             offset = 0,
@@ -47,24 +47,26 @@ class BaseController {
 
         res.status(200).json(
             successResponse(
-                await this.model
-                    .query()
-                    .modify(builder =>
-                        Object.keys(jsonFilters).length > 0
-                            ? builder.whereJsonSupersetOf(Object.keys(jsonFilters)[0], jsonRules(jsonFilters))
-                            : null
-                    )
-                    .joinRelated(`${Object.keys(relationFilters)}`)
-                    .where(relationFiltersRules(relationFilters))
-                    .orderBy(orderRules)
-                    .modify(builder => {
-                        if (queryCondition) {
-                            builder.where(queryCondition).andWhere(filters);
-                        } else {
-                            builder.where(filters);
-                        }
-                    })
-                    .range(offset, limit + offset - 1)
+                queryCallback(
+                    await this.model
+                        .query()
+                        .modify(builder =>
+                            Object.keys(jsonFilters).length > 0
+                                ? builder.whereJsonSupersetOf(Object.keys(jsonFilters)[0], jsonRules(jsonFilters))
+                                : null
+                        )
+                        .joinRelated(`${Object.keys(relationFilters)}`)
+                        .where(relationFiltersRules(relationFilters))
+                        .orderBy(orderRules)
+                        .modify(builder => {
+                            if (queryCondition) {
+                                builder.where(queryCondition).andWhere(filters);
+                            } else {
+                                builder.where(filters);
+                            }
+                        })
+                        .range(offset, limit + offset - 1)
+                )
             )
         );
     }
