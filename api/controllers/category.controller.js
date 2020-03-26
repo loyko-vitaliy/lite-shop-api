@@ -7,11 +7,13 @@ class CategoryController extends BaseController {
     }
 
     _prepareCategories(rawData) {
-        const copy = [...rawData.results];
-        return copy.filter(category => {
-            category.children = copy.filter(cat => cat.parentId === category.id);
+        const {results, total} = rawData;
+        const categories = results.filter(category => {
+            category.children = results.filter(cat => cat.parentId === category.id);
             return category.parentId === null;
         });
+
+        return {results: categories, total};
     }
 }
 
