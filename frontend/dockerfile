@@ -12,6 +12,11 @@ COPY --chown=node:node package.json package-lock*.json ./
 RUN npm ci && npm cache clean --force
 COPY --chown=node:node . .
 
+FROM common as dev
+ENV NODE_ENV=development
+ENV PATH=/app/node_modules/.bin:$PATH
+RUN npm install --only=development
+
 FROM common as build
 RUN npm run build
 
@@ -20,7 +25,4 @@ COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-FROM common as dev
-ENV NODE_ENV=development
-ENV PATH=/app/node_modules/.bin:$PATH
-RUN npm install --only=development
+
