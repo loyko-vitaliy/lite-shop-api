@@ -16,9 +16,14 @@ const Menu = ({ categories }) => {
   const renderRecursiveCategories = category => {
     if (category.children.length > 0) {
       return (
-        <List>
+        <List className={classes.list}>
           {category.children.map(subcategory => (
-            <ListItemLink key={subcategory.id} primary={subcategory.name} className={classes.listItem}>
+            <ListItemLink
+              key={subcategory.id}
+              primary={subcategory.name}
+              className={classes.listItem}
+              to={`/category/${category.slug !== 'appstore' ? `${category.slug}/` : ''}${subcategory.slug}`}
+            >
               {renderRecursiveCategories(subcategory)}
             </ListItemLink>
           ))}
