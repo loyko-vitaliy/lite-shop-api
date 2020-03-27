@@ -6,13 +6,14 @@ import useStyles from './styles'
 import Menu from '../Menu/Menu'
 import Spinner from '../../components/Spinner/Spinner'
 import CategoryPage from '../CategoryPage/CategoryPage'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import useDataApi from '../../utils/hooks/useDataApi'
 
 const Layout = () => {
   const classes = useStyles()
 
-  const { rawData, isLoading } = useDataApi({ url: '/categories', method: 'GET' })
-  const categories = rawData ? rawData : []
+  const { rawData, isLoading, isError } = useDataApi({ url: '/categories?filter={"limit": 100}', method: 'GET' })
+  const categories = rawData && !isError ? rawData.results : []
 
   return (
     <Router>
@@ -24,10 +25,12 @@ const Layout = () => {
               <Route exact path="/">
                 Main page
               </Route>
-              <Route path="/category/:parent?/:name">
-                <CategoryPage />
+              <Route path="/category">
+                <CategoryPage categories={categories} />
               </Route>
-              <Route>404</Route>
+              <Route>
+                <NotFoundPage />
+              </Route>
             </Switch>
           </Grid>
         </Grid>

@@ -13,7 +13,7 @@ const Menu = ({ categories }) => {
   const [open, setOpen] = useState(false)
   const handleCategoriesClick = () => setOpen(!open)
 
-  const renderRecursiveCategories = category => {
+  const renderRecursiveCategories = (category, path = '') => {
     if (category.children.length > 0) {
       return (
         <List className={classes.list}>
@@ -22,9 +22,9 @@ const Menu = ({ categories }) => {
               key={subcategory.id}
               primary={subcategory.name}
               className={classes.listItem}
-              to={`/category/${category.slug !== 'appstore' ? `${category.slug}/` : ''}${subcategory.slug}`}
+              to={`/category/${path === '' ? '' : `${path}/`}${category.slug}/${subcategory.slug}`}
             >
-              {renderRecursiveCategories(subcategory)}
+              {renderRecursiveCategories(subcategory, `${path === '' ? `` : `${path}/`}${category.slug}`)}
             </ListItemLink>
           ))}
         </List>

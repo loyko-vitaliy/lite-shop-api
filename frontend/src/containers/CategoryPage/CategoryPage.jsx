@@ -1,19 +1,34 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import { useLocation } from 'react-router-dom'
 
 import useStyles from './styles'
+import categoriesPropTypes from '../../types/categoriesPropTypes'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import { checkPath, getCategory } from '../../utils/helper'
 
-const CategoryPage = () => {
-  const { parent, name } = useParams()
-  const path = parent ? `${parent}/${name}` : `${name}`
+const CategoryPage = categories => {
   const classes = useStyles()
+  const { pathname } = useLocation()
+
+  if (!checkPath(pathname, categories)) {
+    return <NotFoundPage />
+  }
+
+  const { id, name } = getCategory(pathname, categories)
 
   return (
     <Grid container direction="row" justify="center" alignItems="center" className={classes.categoryPage}>
-      <div>Category page for {path}</div>
+      <Grid>
+        <Grid className={classes.field}>CategoryName: {name}</Grid>
+        <Grid className={classes.field}> CategoryID: {id}</Grid>
+      </Grid>
     </Grid>
   )
+}
+
+CategoryPage.propTypes = {
+  categories: categoriesPropTypes
 }
 
 export default CategoryPage
